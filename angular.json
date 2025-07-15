@@ -29,9 +29,20 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*.svg",
+                "input": "public/icons",
+                "output": "public/icons"
+              },
+              {
+                "glob": "**/*.svg",
+                "input": "node_modules/@material-symbols/svg-400/outlined/",
+                "output": "public/icons"
               }
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -91,6 +102,7 @@
               }
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.scss"
             ],
             "scripts": []

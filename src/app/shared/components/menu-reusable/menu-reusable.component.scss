@@ -1,0 +1,56 @@
+@use 'styles/colores' as *;
+@use 'styles/tipografia' as *;
+
+.menu-reusable {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  .menu-item {
+    margin-bottom: 1rem;
+
+    a, .menu-title {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 0.6rem 1rem;
+      border-radius: 0.5rem;
+      color: $color-texto-principal;
+      font-size: $texto-general;
+      text-decoration: none;
+      transition: background 0.3s;
+
+      mat-icon {
+        font-size: 1.4rem;
+        color: $color-primario;
+      }
+
+      &:hover {
+        background-color: $color-fondo-hover;
+      }
+    }
+
+    .submenu {
+      list-style: none;
+      padding-left: 1.8rem;
+      margin-top: 0.3rem;
+
+      li a {
+        font-size: $texto-pequeño;
+        padding: 0.5rem 1rem;
+        border-radius: 0.4rem;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+
+        mat-icon {
+          font-size: 1.2rem;
+        }
+
+        &:hover {
+          background-color: $color-fondo-hover;
+        }
+      }
+    }
+  }
+}

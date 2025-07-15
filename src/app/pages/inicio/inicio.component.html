@@ -1,0 +1,27 @@
+<div class="inicio-container">
+  <!-- Botón ADMIN (arriba a la derecha) -->
+  <a routerLink="/perfil" class="btn-admin">
+    <img src="/svg/inicio/BotonPerfil.svg" alt="Admin" />
+  </a>
+
+  <h1>¿Qué deseas hacer hoy?</h1>
+  <h3>Sistema de caja de ahorros</h3>
+
+  <div class="menu-grid">
+    <app-menu-card
+  *ngFor="let card of cards"
+  [icon]="card.icon"
+  [title]="card.title"
+  [routerLink]="card.route">
+</app-menu-card>
+
+  </div>
+
+  <!-- Botón AYUDA (abajo a la derecha) -->
+  <a routerLink="/ayuda" class="btn-ayuda">
+    <img src="/svg/inicio/BotonGuiaRapida.svg" alt="Ayuda" />
+  </a>
+
+  <!-- Botón Cerrar sesión -->
+  <a class="cerrar-sesion" routerLink="/login">Cerrar Sesión</a>
+</div>
