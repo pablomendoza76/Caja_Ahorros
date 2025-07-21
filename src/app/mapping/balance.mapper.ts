@@ -17,4 +17,26 @@ export class BalanceMapper {
       ])
     );
   }
+
+  obtenerFlujoCajaDiario(): Observable<any[]> {
+  return this.indicadoresService.obtenerFlujoCaja(); // NO necesita map
+}
+
+obtenerCarteraPrestamos(): Observable<any[]> {
+  return this.indicadoresService.obtenerCarteraPrestamos();
+}
+
+obtenerIndicadoresFinancieros(): Observable<any> {
+  return this.indicadoresService.obtenerIndicadoresFinancieros().pipe(
+    map(([res]) => ({
+      totalIngresos: res.total_ingresos,
+      totalEgresos: res.total_egresos,
+      saldoActual: res.saldo_actual,
+      prestamosActivos: res.prestamos_activos,
+      carteraTotal: res.cartera_total
+    }))
+  );
+}
+
+
 }

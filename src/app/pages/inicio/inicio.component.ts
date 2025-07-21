@@ -15,6 +15,7 @@ import { MenuCardComponent } from '../../shared/components/menu-card/menu-card.c
   ],
 })
 export class InicioComponent {
+  mostrarModalAyuda = false;
   cards = [
   { icon: '/svg/inicio/opciones/management.svg', title: 'Gestión de usuarios', route: '/usuarios/inicio' },
   { icon: '/svg/inicio/opciones/save-money.svg', title: 'Gestión de aportes', route: '/aportes' },

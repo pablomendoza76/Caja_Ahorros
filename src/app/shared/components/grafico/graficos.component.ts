@@ -6,7 +6,7 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   OnChanges,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { CommonModule } from '@angular/common';
@@ -18,7 +18,7 @@ import { ConfiguracionColumna } from '../tabla-dinamica/ConfiguracionColumna.mod
   standalone: true,
   imports: [NgxChartsModule, CommonModule, TablaDinamicaComponent],
   templateUrl: './graficos.component.html',
-  styleUrls: ['./graficos.component.scss']
+  styleUrls: ['./graficos.component.scss'],
 })
 export class GraficosComponent implements AfterViewInit, OnChanges {
   @Input() tipo: 'barra' | 'pastel' | 'linea' = 'barra';
@@ -60,7 +60,7 @@ export class GraficosComponent implements AfterViewInit, OnChanges {
       { tipo: 'texto', titulo: 'Fecha', template: this.columnaFecha },
       { tipo: 'texto', titulo: 'Intereses', template: this.columnaInteres },
       { tipo: 'texto', titulo: 'Monto', template: this.columnaMonto },
-      { tipo: 'texto', titulo: 'Saldo', template: this.columnaSaldo }
+      { tipo: 'texto', titulo: 'Saldo', template: this.columnaSaldo },
     ];
     this.cdr.detectChanges();
   }
@@ -75,17 +75,33 @@ export class GraficosComponent implements AfterViewInit, OnChanges {
    * Agrupa los datos por tipo y calcula el total por cada uno para el gráfico
    */
   prepararDataGrafico(): void {
-    const agrupadoPorTipo: { [key: string]: number } = {};
+    // Si ya tiene 'name' y 'value', se asume que está listo
+    const datosYaFormateados = this.datos.every(
+      (d) => 'name' in d && 'value' in d
+    );
 
-    this.datos.forEach(mov => {
+    if (this.tipo === 'linea') {
+      this.dataGrafico = this.datos;
+      return;
+    }
+
+    if (datosYaFormateados) {
+      this.dataGrafico = this.datos;
+      return;
+    }
+
+    // Caso alternativo: procesar tipo + monto (legacy)
+    const agrupadoPorTipo: { [key: string]: number } = {};
+    this.datos.forEach((mov) => {
       if (mov.tipo && typeof mov.monto === 'number') {
-        agrupadoPorTipo[mov.tipo] = (agrupadoPorTipo[mov.tipo] || 0) + mov.monto;
+        agrupadoPorTipo[mov.tipo] =
+          (agrupadoPorTipo[mov.tipo] || 0) + mov.monto;
       }
     });
 
-    this.dataGrafico = Object.keys(agrupadoPorTipo).map(tipo => ({
+    this.dataGrafico = Object.keys(agrupadoPorTipo).map((tipo) => ({
       name: tipo,
-      value: agrupadoPorTipo[tipo]
+      value: agrupadoPorTipo[tipo],
     }));
   }
 
@@ -103,7 +119,7 @@ export class GraficosComponent implements AfterViewInit, OnChanges {
   prepararFilasTabla(): void {
     let saldoAcumulado = 0;
 
-    this.filasTabla = this.datos.map(m => {
+    this.filasTabla = this.datos.map((m) => {
       const monto = m.monto || 0;
       saldoAcumulado += monto;
 
@@ -112,24 +128,23 @@ export class GraficosComponent implements AfterViewInit, OnChanges {
         fecha: new Date(m.fecha).toLocaleDateString('es-EC', {
           day: '2-digit',
           month: 'short',
-          year: 'numeric'
+          year: 'numeric',
         }),
         interes: '$0.00',
         monto: `$${monto.toFixed(2)}`,
-        saldo: `$${saldoAcumulado.toFixed(2)}`
+        saldo: `$${saldoAcumulado.toFixed(2)}`,
       };
     });
   }
   /**
- * Formatea las etiquetas del gráfico pastel con porcentaje
- */
-formatearEtiquetaConPorcentaje(nombre: string): string {
-  const total = this.dataGrafico.reduce((acc, val) => acc + val.value, 0);
-  const segmento = this.dataGrafico.find(d => d.name === nombre);
-  if (!segmento || total === 0) return nombre;
+   * Formatea las etiquetas del gráfico pastel con porcentaje
+   */
+  formatearEtiquetaConPorcentaje(nombre: string): string {
+    const total = this.dataGrafico.reduce((acc, val) => acc + val.value, 0);
+    const segmento = this.dataGrafico.find((d) => d.name === nombre);
+    if (!segmento || total === 0) return nombre;
 
-  const porcentaje = (segmento.value / total) * 100;
-  return `${nombre} (${porcentaje.toFixed(1)}%)`;
-}
-
+    const porcentaje = (segmento.value / total) * 100;
+    return `${nombre} (${porcentaje.toFixed(1)}%)`;
+  }
 }

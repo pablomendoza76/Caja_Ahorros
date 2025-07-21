@@ -29,6 +29,10 @@ export const routes: Routes = [
   //Estados Financieros
    { path: 'Inicio/Estados', loadComponent: () => import('./pages/Estados_Financieros/inicio-estados/inicio-estados.component').then(m => m.InicioEstadosComponent) },
    { path: 'Balance', loadComponent: () => import('./pages/Estados_Financieros/balance-general/balance-general.component').then(m => m.BalanceGeneralComponent) },
+   { path: 'Ingresos', loadComponent: () => import('./pages/Estados_Financieros/ingresos-egresos/ingresos-egresos.component').then(m => m.IngresosEgresosComponent) },
+   { path: 'flujo_caja', loadComponent: () => import('./pages/Estados_Financieros/flujo-caja/flujo-caja.component').then(m => m.FlujoCajaComponent) },
+    { path: 'cartera_prestamos', loadComponent: () => import('./pages/Estados_Financieros/cartera-prestamos/cartera-prestamos.component').then(m => m.CarteraPrestamosComponent) },
+    { path: 'indicadores', loadComponent: () => import('./pages/Estados_Financieros/indicadores-financieros/indicadores-financieros.component').then(m => m.IndicadoresFinancierosComponent) },
 
 
   // Redirecciones

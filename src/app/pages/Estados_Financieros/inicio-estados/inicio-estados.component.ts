@@ -23,22 +23,22 @@ export class InicioEstadosComponent {
     {
       icon: 'svg/estados_financieros/Egresos.svg',
       title: 'Ingresos vs\nEgresos',
-      route: '/estados/ingresos-egresos'
+      route: '/Ingresos'
     },
     {
       icon: 'svg/estados_financieros/flujo_caja.svg',
       title: 'Flujo de Caja',
-      route: '/estados/flujo-caja'
+      route: '/flujo_caja'
     },
     {
       icon: 'svg/estados_financieros/cartera.svg',
       title: 'Cartera \nPréstamos',
-      route: '/estados/cartera-prestamos'
+      route: '/cartera_prestamos'
     },
     {
       icon: 'svg/estados_financieros/indicadores.svg',
       title: 'Indicadores\nFinancieros',
-      route: '/estados/indicadores'
+      route: '/indicadores'
     }
   ];
 
