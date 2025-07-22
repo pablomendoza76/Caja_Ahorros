@@ -123,5 +123,37 @@ async cambiarEstadoPrestamo(id: number, nuevoEstado: 'aceptado' | 'rechazado' | 
   return await firstValueFrom(res$);
 }
 
+/** Obtener socio y sus préstamos a partir de la cédula */
+async obtenerPrestamosPorCedula(cedula: string): Promise<{ socio: any, prestamos: any[] }> {
+  // 1. Buscar socio por cédula
+  const socioUrl = `${environment.supabaseUrl}/rest/v1/socios`;
+  const socioParams = new HttpParams().set('cedula', `eq.${cedula}`);
+  const socioRes$ = this.http.get<any[]>(socioUrl, {
+    headers: this.headers,
+    params: socioParams
+  });
+
+  const socioArray = await firstValueFrom(socioRes$);
+  const socio = socioArray[0];
+
+  if (!socio) {
+    throw new Error('Socio no encontrado');
+  }
+
+  // 2. Buscar préstamos por socio_id
+  const prestamosParams = new HttpParams()
+    .set('socio_id', `eq.${socio.id}`)
+    .set('select', '*');
+
+  const prestamosRes$ = this.http.get<any[]>(this.baseUrl, {
+    headers: this.headers,
+    params: prestamosParams
+  });
+
+  const prestamos = await firstValueFrom(prestamosRes$);
+
+  return { socio, prestamos };
+}
+
 
 }

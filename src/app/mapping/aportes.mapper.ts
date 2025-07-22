@@ -77,4 +77,10 @@ obtenerMovimientosPagoYRetiro(): Observable<any[]> {
     })
   );
 }
+
+obtenerCuentaConMovimientos(numeroCuenta: string): Observable<{ cuenta: any, movimientos: any[] }> {
+  // Usa directamente el método que ya devuelve saldo y movimientos procesados
+  return this.aportesService.obtenerCuentaConMovimientos(numeroCuenta);
+}
+
 }

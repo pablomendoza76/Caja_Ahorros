@@ -96,4 +96,28 @@ obtenerSocioPorNumeroCuenta(numeroCuenta: string): Observable<any> {
     })
   );
 }
+
+/**
+ * Obtiene los datos del socio asociado al ID de usuario
+ * @param usuarioId ID del usuario vinculado al socio
+ */
+obtenerSocioPorUsuarioId(usuarioId: number): Observable<any> {
+  return this.http.get<any[]>(this.baseUrl, {
+    headers: this.headers,
+    params: {
+      select: '*',
+      usuario_id: `eq.${usuarioId}`,
+      estado: 'eq.true'
+    }
+  }).pipe(
+    map(socios => {
+      if (socios.length > 0) {
+        return socios[0];
+      } else {
+        throw new Error('No se encontró un socio con ese usuario_id');
+      }
+    })
+  );
+}
+
 }

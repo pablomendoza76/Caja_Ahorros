@@ -97,4 +97,51 @@ obtenerMovimientosPagoYRetiro(): Observable<any[]> {
   });
 }
 
+/**
+ * Devuelve la cuenta completa y sus movimientos con saldo calculado.
+ */
+obtenerCuentaConMovimientos(numeroCuenta: string): Observable<{ cuenta: any, movimientos: any[] }> {
+  return this.http.get<any[]>(`${environment.supabaseUrl}/rest/v1/cuentas`, {
+    headers: this.headers,
+    params: {
+      select: '*',
+      numero_cuenta: `eq.${numeroCuenta}`
+    }
+  }).pipe(
+    switchMap(cuentas => {
+      if (!cuentas || cuentas.length === 0) {
+        return throwError(() => new Error('Cuenta no encontrada'));
+      }
+      const cuenta = cuentas[0];
+
+      // Obtener todos los movimientos para calcular correctamente el saldo
+      return this.http.get<any[]>(this.baseUrl, {
+        headers: this.headers,
+        params: {
+          select: '*',
+          cuenta_id: `eq.${cuenta.id}`,
+          order: 'fecha_movimiento.asc,id.asc'
+        }
+      }).pipe(
+        map(movimientos => {
+          let saldo = 0;
+
+          // Calcular saldo acumulado de todos los movimientos
+          const movimientosConSaldo = movimientos.map(mov => {
+            saldo += mov.tipo === 'deposito' ? mov.monto : (mov.tipo === 'retiro' ? -mov.monto : 0);
+            return { ...mov, saldo };
+          });
+
+          // Obtener los últimos 5 movimientos con saldo (ordenados del más reciente al más antiguo)
+          const ultimosCinco = movimientosConSaldo.slice(-5).reverse();
+
+          return { cuenta, movimientos: ultimosCinco };
+        })
+      );
+    })
+  );
+}
+
+
+
 }

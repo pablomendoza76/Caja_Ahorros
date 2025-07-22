@@ -4,11 +4,9 @@
 
   <!-- Logo Principal fuera de la tarjeta -->
   <img class="logo-principal" src="/img/utpl_logo.png" alt="UTPL" />
-
   <img class="login-illustration" src="/img/muñeco.png" alt="ilustración" />
 
   <div class="login-card">
-
     <form (ngSubmit)="onIniciarSesion()" #loginForm="ngForm">
       <h3>Iniciar Sesión</h3>
 
@@ -18,7 +16,7 @@
         type="email"
         name="correo"
         required
-        ngModel
+        [(ngModel)]="correo"
         placeholder="ejemplo@utpl.edu.ec"
       />
 
@@ -26,18 +24,27 @@
       <div class="password-container">
         <input
           id="contrasena"
-          type="password"
+          [type]="mostrarContrasena ? 'text' : 'password'"
           name="contrasena"
           required
-          ngModel
+          [(ngModel)]="contrasena"
           placeholder="********"
         />
-        <span class="toggle-visibility">🙈</span>
+        <span class="toggle-visibility" (click)="toggleContrasena()">🙈</span>
       </div>
 
       <button type="submit">Iniciar</button>
       <a class="forgot" href="#">Olvidé mi contraseña</a>
     </form>
+  </div>
+</div>
+
+<!-- Modal de error -->
+<div class="modal" *ngIf="mostrarModal">
+  <div class="modal-content">
+    <h4>Algo salió mal</h4>
+    <p>{{ mensajeModal }}</p>
+    <button (click)="cerrarModal()">Cerrar</button>
   </div>
 </div>
 

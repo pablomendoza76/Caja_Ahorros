@@ -114,4 +114,21 @@ export class SocioMapper {
   camposBusquedaCedula = [
     { key: 'cedula', label: 'Ingrese número de cédula', tipo: 'text', placeholder: 'Ejemplo: ##########' }
   ];
+
+
+  obtenerSocioAutenticado(): Observable<any> {
+  const usuarioRaw = localStorage.getItem('usuario');
+  if (!usuarioRaw) throw new Error('No hay usuario autenticado');
+
+  const usuario = JSON.parse(usuarioRaw);
+  const usuarioId = usuario.id;
+
+  return this.socioService.obtenerSocioPorUsuarioId(usuarioId).pipe(
+    map(socio => {
+      if (!socio) throw new Error('No se encontró socio para este usuario');
+      return socio;
+    })
+  );
+}
+
 }

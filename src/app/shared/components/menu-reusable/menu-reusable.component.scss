@@ -1,56 +1,242 @@
-@use 'styles/colores' as *;
-@use 'styles/tipografia' as *;
+@use '../../catalogo/colores.scss' as *;
+@use '../../catalogo/tipografia.scss' as *;
+@use 'sass:color';
 
-.menu-reusable {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.menu-lateral,
+.menu-inferior {
+  font-family: $fuente-principal;
+}
 
-  .menu-item {
-    margin-bottom: 1rem;
+// 🌐 MENÚ LATERAL – Estilo tarjeta unificada (desktop)
+.menu-lateral {
+  display: none;
 
-    a, .menu-title {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      padding: 0.6rem 1rem;
-      border-radius: 0.5rem;
-      color: $color-texto-principal;
-      font-size: $texto-general;
-      text-decoration: none;
-      transition: background 0.3s;
+  @media (min-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    width: 14rem;
+    height: calc(100vh - 6rem);
+    margin: 1rem;
+    padding: 2rem 1rem;
+    border-radius: 1.2rem;
+    background: linear-gradient(145deg, $color-primario 0%, color.adjust($color-primario, $lightness: -10%) 100%);
+    box-shadow: $sombra-fuerte-ios;
+    color: $color-blanco;
+    overflow-y: auto;
+  }
 
-      mat-icon {
-        font-size: 1.4rem;
-        color: $color-primario;
-      }
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    align-items: center;
+  }
 
-      &:hover {
-        background-color: $color-fondo-hover;
-      }
+  li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.6rem 0.8rem;
+    border-radius: 0.8rem;
+    font-size: 0.9rem;
+    font-weight: $fuente-semi;
+    color: $color-blanco;
+    transition: background 0.25s ease, box-shadow 0.25s ease;
+    cursor: pointer;
+    width: 100%;
+    max-width: 180px;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.08);
     }
 
-    .submenu {
-      list-style: none;
-      padding-left: 1.8rem;
-      margin-top: 0.3rem;
+    &.activo {
+      background-color: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
 
-      li a {
-        font-size: $texto-pequeño;
-        padding: 0.5rem 1rem;
-        border-radius: 0.4rem;
+    .contenido-opcion {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      text-align: center;
+
+      .icono-circular {
+        background-color: $color-blanco;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
         display: flex;
         align-items: center;
-        gap: 0.6rem;
+        justify-content: center;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 
-        mat-icon {
-          font-size: 1.2rem;
+        img,
+        .material-symbols-outlined {
+          width: 28px;
+          height: 28px;
+          font-size: 28px;
+          color: $color-primario;
+          filter: brightness(0) saturate(100%) invert(15%) sepia(40%) saturate(500%) hue-rotate(170deg) brightness(95%) contrast(90%);
         }
+      }
 
-        &:hover {
-          background-color: $color-fondo-hover;
-        }
+      .etiqueta {
+        color: $color-amarillo-dorado;
+        font-size: 0.92rem;
+        font-weight: $fuente-bold;
       }
     }
   }
 }
+
+// 📱 MENÚ INFERIOR (móvil, estilo imagen y colores institucionales)
+.menu-inferior {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20rem;
+  height: 56px;
+  background-color: $color-primario;
+  border-radius: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+  overflow: visible; // Permite que los elementos floten fuera
+
+  ul {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    position: relative;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $color-blanco;
+    cursor: pointer;
+    z-index: 101;
+
+    .icono-material,
+    .icono-svg {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+      color: $color-blanco;
+      filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.3));
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    &.activo:not(.centro) {
+      transform: translateY(-15px);
+      transition: transform 0.3s ease;
+
+      // Mantengo EXACTAMENTE tu curvatura blanca original
+      &::after {
+        content: '';
+        position: absolute;
+        top: -18px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 60px;
+        background-color: $color-blanco;
+        border-radius: 60%;
+        z-index: 0;
+      }
+
+      // Círculo dorado con mejoras visuales pero misma posición/tamaño
+      &::before {
+        content: '';
+        position: absolute;
+        top: -12px;
+        width: 48px;
+        height: 48px;
+        background: 
+          radial-gradient(
+            circle at center,
+            lighten($color-amarillo-dorado, 5%) 0%,
+            $color-amarillo-dorado 70%,
+            darken($color-amarillo-dorado, 5%) 100%
+          );
+        border-radius: 50%;
+        z-index: 1;
+        box-shadow: 
+          0 2px 4px rgba(0, 0, 0, 0.2),
+          0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+      }
+
+      .icono-material,
+      .icono-svg {
+        position: relative;
+        z-index: 2;
+        color: $color-primario;
+        filter: none;
+        transform: scale(1.15);
+      }
+    }
+
+    &.centro {
+      position: absolute;
+      top: -20px;
+      background-color: $color-blanco;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 
+        0 6px 12px rgba(0, 0, 0, 0.4),
+        0 0 0 2px rgba(255, 255, 255, 0.2) inset;
+      z-index: 102;
+      transition: all 0.2s ease;
+
+      .icono-material,
+      .icono-svg {
+        width: 28px;
+        height: 28px;
+        font-size: 28px;
+        color: $color-primario;
+        filter: none;
+      }
+
+      &:active {
+        transform: scale(0.95) translateY(2px);
+      }
+    }
+
+    // Efecto sutil al interactuar
+    &:not(.centro):hover {
+      .icono-material,
+      .icono-svg {
+        transform: scale(1.1);
+      }
+    }
+
+    .etiqueta {
+      display: none;
+    }
+  }
+
+  @media (min-width: 768px) {
+    display: none;
+  }
+}
+

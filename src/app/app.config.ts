@@ -6,6 +6,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { SupabaseInterceptor } from './interceptors/supabase.interceptor';
 import { routes } from './app.routes';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { FormsModule } from '@angular/forms';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -13,6 +14,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideAnimationsAsync(),
     provideHttpClient(withInterceptors([SupabaseInterceptor])),
-    importProvidersFrom(NgxChartsModule) 
+    importProvidersFrom(NgxChartsModule, FormsModule) 
   ]
 };

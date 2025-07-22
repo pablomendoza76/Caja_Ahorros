@@ -3,6 +3,7 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   { path: 'login', loadComponent: () => import('./auth/login/login.component').then(m => m.LoginComponent) },
   { path: 'inicio', loadComponent: () => import('./pages/Inicio/inicio.component').then(m => m.InicioComponent) },
+  { path: 'inicio_socios', loadComponent: () => import('./pages/Socio/inicio-socios/inicio-socios.component').then(m => m.InicioSociosComponent) },
   { path: 'perfil', loadComponent: () => import('./pages/Usuarios/perfil/perfil.component').then(m => m.PerfilComponent) },
 
   // Usuarios
@@ -33,6 +34,12 @@ export const routes: Routes = [
    { path: 'flujo_caja', loadComponent: () => import('./pages/Estados_Financieros/flujo-caja/flujo-caja.component').then(m => m.FlujoCajaComponent) },
     { path: 'cartera_prestamos', loadComponent: () => import('./pages/Estados_Financieros/cartera-prestamos/cartera-prestamos.component').then(m => m.CarteraPrestamosComponent) },
     { path: 'indicadores', loadComponent: () => import('./pages/Estados_Financieros/indicadores-financieros/indicadores-financieros.component').then(m => m.IndicadoresFinancierosComponent) },
+
+
+    //Socios
+    { path: 'simulador', loadComponent: () => import('./pages/Socio/simular-prestamo/simular-prestamo.component').then(m => m.SimularPrestamoComponent) },
+    { path: 'movimientos', loadComponent: () => import('./pages/Socio/movimientos/movimientos.component').then(m => m.MovimientosComponent) },
+    { path: 'prestamos', loadComponent: () => import('./pages/Socio/prestamos-socio/prestamos-socio.component').then(m => m.PrestamosSocioComponent) },
 
 
   // Redirecciones
